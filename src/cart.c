@@ -9,14 +9,14 @@ int DetectROMFormat(FILE *rom_fp) {
 	uint8_t header_buffer[16];
 	uint8_t ines_signature[] = "NES\x1A";
 
+    rewind(rom_fp);
+
 	if (fread(header_buffer, 1, sizeof(header_buffer), rom_fp) !=
 	    sizeof(header_buffer)) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Unable to read ROM header");
 		return ERROR_READ;
 	}
-
-	rewind(rom_fp);
 
 	if (!memcmp(header_buffer, ines_signature, 4)) {
 		if ((header_buffer[7] & 0b00001100) == 0b00001000) {
@@ -25,10 +25,14 @@ int DetectROMFormat(FILE *rom_fp) {
 		return iNES_FORMAT;
 	}
 
+	PrintError((const char *)__PRETTY_FUNCTION__, __FILE__, __LINE__,
+		   "[-] Unsupported file format");
 	return UNSUPPORTED_FORMAT;
 }
 
-int LoadiNES(FILE *rom_fp, NES_T *NES) {
+int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
+    rewind(rom_fp);
+
 	if (fread(&NES->iNES_Header, 1, sizeof(&NES->iNES_Header), rom_fp) !=
 	    sizeof(&NES->iNES_Header)) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
@@ -39,8 +43,8 @@ int LoadiNES(FILE *rom_fp, NES_T *NES) {
 	return SUCCESS;
 }
 
-void PrintiNESInfo(iNES_Header_T *iNES_Header) {
-	printf("[=] Printing ROM info:\n");
+void PrintiNESInfo(char *rom_filename, iNES_Header_T *iNES_Header) {
+	printf("[+] Printing iNES ROM info for %s:\n", rom_filename);
 
 	printf("\tROM signature:\t%.*s\n", (int)sizeof(iNES_Header->signature),
 	       iNES_Header->signature);
@@ -70,6 +74,13 @@ void PrintiNESInfo(iNES_Header_T *iNES_Header) {
 
 	printf("\tBattery:\t");
 	if (iNES_Header->flags6 & 0b00000010) {
+		printf("Yes\n");
+	} else {
+		printf("No\n");
+	}
+
+	printf("\tTrainer:\t");
+	if (iNES_Header->flags6 & 0b00000100) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
@@ -110,8 +121,6 @@ int LoadROM(char *rom_filename, NES_T *NES) {
 	}
 
 	if (rom_format == UNSUPPORTED_FORMAT) {
-		fprintf(stderr, "[-] Unsupported file format for %s\n",
-			rom_filename);
 		fclose(rom_fp);
 		return FAIL;
 	}
@@ -119,11 +128,13 @@ int LoadROM(char *rom_filename, NES_T *NES) {
 	switch (rom_format) {
 	case iNES_FORMAT:
 		printf("[+] Detected iNES format\n");
-		load_result = LoadiNES(rom_fp, NES);
+		load_result = LoadiNESHeader(rom_fp, NES);
+		PrintiNESInfo(rom_filename, &NES->iNES_Header);
+		//Print Memory map
 		break;
 	case NES2_FORMAT:
 		printf("[+] Detected NES2.0 format\n");
-		// load_result = LoadiNES2();
+		// load_result = LoadiNESHeader2();
 		break;
 	case UNSUPPORTED_FORMAT:
 		fprintf(stderr, "[-] Unsupported file format for %s\n",

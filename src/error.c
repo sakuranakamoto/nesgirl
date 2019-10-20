@@ -14,7 +14,8 @@ void PrintStackTrace(int index) {
 	int frames = backtrace(callstack, 128);
 	char **backtrace_output = backtrace_symbols(callstack, frames);
 	for (; index < frames; ++index) {
-		printf("\n%s ", backtrace_output[index]);
+		printf("\n\t%s ", backtrace_output[index]);
 	}
+	printf("\n");
 	free(backtrace_output);
 }

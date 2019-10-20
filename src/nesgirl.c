@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "cart.h"
 #include "error.h"
+#include "memory.h"
 
 int main(int argc, char *argv[]) {
 	NES_T NES;
@@ -10,7 +11,7 @@ int main(int argc, char *argv[]) {
 	int fflag = 0;
 	char *rom_filename;
 	static const char *usage = "usage:";
-	static const char *start_message = "[+] Started up nesgirl\n\n";
+	static const char *start_message = "[+] Started up nesgirl >..<\n";
 
 	while ((option = getopt(argc, argv, "f:")) != -1) {
 		switch (option) {
@@ -30,8 +31,15 @@ int main(int argc, char *argv[]) {
 
 	printf("%s", start_message);
 
-	if (LoadROM(rom_filename, &NES)) {
+	if (InitMem()) {
 		return FAIL;
 	}
+
+	if (LoadROM(rom_filename, &NES)) {
+		FreeMem();
+		return FAIL;
+	}
+
+	FreeMem();
 	return SUCCESS;
 }
