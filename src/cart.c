@@ -41,16 +41,17 @@ int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
 		return FAIL;
 	}
 
-	if (fread(&NES->mem[0x8000],
-		  sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000), 1,
-		  rom_fp) != 1) {
+	if (fread(&NES->mem[PRG_ROM_BANK_0],
+		  sizeof(NES->iNES_Header.PRG_ROM_bank_num * PRG_ROM_BANK_SIZE),
+		  1, rom_fp) != 1) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Unable to read PRG ROM into mem");
 		return FAIL;
 	}
 
 	if (NES->iNES_Header.PRG_ROM_bank_num == 1) {
-	memcpy(&NES->mem[0xC000],&NES->mem[0x8000],sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000));
+		memcpy(&NES->mem[PRG_ROM_BANK_1], &NES->mem[PRG_ROM_BANK_0],
+		       sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000));
 	}
 
 	return SUCCESS;
@@ -75,10 +76,10 @@ void PrintiNESInfo(char *rom_filename, iNES_Header_T *iNES_Header) {
 	printf("\tCHR ROM size:\t%d KB\n", 0x8 * iNES_Header->CHR_ROM_bank_num);
 
 	printf("\tMirror type:\t");
-	if (iNES_Header->flags6 & 0b00001000) {
+	if (iNES_Header->flags6 & FOUR_SCREEN_MIRROR_MASK) {
 		printf("4 screens\n");
 	} else {
-		if (iNES_Header->flags6 & 0b00000001) {
+		if (iNES_Header->flags6 & VERTICLE_MIRROR_MASK) {
 			printf("Verticle\n");
 		} else {
 			printf("Horizontal\n");
@@ -86,14 +87,14 @@ void PrintiNESInfo(char *rom_filename, iNES_Header_T *iNES_Header) {
 	}
 
 	printf("\tBattery:\t");
-	if (iNES_Header->flags6 & 0b00000010) {
+	if (iNES_Header->flags6 & BATTERY_MASK) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
 	}
 
 	printf("\tTrainer:\t");
-	if (iNES_Header->flags6 & 0b00000100) {
+	if (iNES_Header->flags6 & TRAINER_MASK) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
@@ -102,14 +103,14 @@ void PrintiNESInfo(char *rom_filename, iNES_Header_T *iNES_Header) {
 	printf("\tMapper:\t\t%d\n", (iNES_Header->flags6 & 0b11110000) >> 4);
 
 	printf("\tVS Unisystem:\t");
-	if (iNES_Header->flags7 & 0b00000001) {
+	if (iNES_Header->flags7 & VS_UNISYSTEM_MASK) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
 	}
 
 	printf("\tPlaychoice-10:\t");
-	if (iNES_Header->flags7 & 0b00000010) {
+	if (iNES_Header->flags7 & PLAYCHOICE_10_MASK) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
