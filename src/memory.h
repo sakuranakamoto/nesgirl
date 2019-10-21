@@ -1,8 +1,9 @@
 #ifndef MEMORY_H
 #define MEMORY_H
-
-static void *mem;
+#include <stdint.h>
+#include "nes.h"
 
 int InitMem();
 int FreeMem();
+
 #endif

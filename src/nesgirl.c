@@ -31,15 +31,15 @@ int main(int argc, char *argv[]) {
 
 	printf("%s", start_message);
 
-	if (InitMem()) {
+	if (InitMem(&NES)) {
 		return FAIL;
 	}
 
 	if (LoadROM(rom_filename, &NES)) {
-		FreeMem();
+		FreeMem(NES.mem);
 		return FAIL;
 	}
 
-	FreeMem();
+	FreeMem(NES.mem);
 	return SUCCESS;
 }

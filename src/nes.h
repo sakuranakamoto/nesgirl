@@ -1,7 +1,6 @@
 #ifndef NES_H
 #define NES_H
-
-#include "cart.h"
+#include <stdint.h>
 
 typedef struct iNES_Header_T {
 	uint8_t signature[4];
@@ -15,6 +14,7 @@ typedef struct iNES_Header_T {
 
 typedef struct NES_T {
 	iNES_Header_T iNES_Header;
+	uint8_t *mem;
 } NES_T;
 
 #endif

@@ -4,12 +4,14 @@
 #include <errno.h>
 #include "cart.h"
 #include "error.h"
+#include "memory.h"
+#include "nes.h"
 
 int DetectROMFormat(FILE *rom_fp) {
 	uint8_t header_buffer[16];
 	uint8_t ines_signature[] = "NES\x1A";
 
-    rewind(rom_fp);
+	rewind(rom_fp);
 
 	if (fread(header_buffer, 1, sizeof(header_buffer), rom_fp) !=
 	    sizeof(header_buffer)) {
@@ -31,13 +33,24 @@ int DetectROMFormat(FILE *rom_fp) {
 }
 
 int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
-    rewind(rom_fp);
+	rewind(rom_fp);
 
-	if (fread(&NES->iNES_Header, 1, sizeof(&NES->iNES_Header), rom_fp) !=
-	    sizeof(&NES->iNES_Header)) {
+	if (fread(&NES->iNES_Header, sizeof(iNES_Header_T), 1, rom_fp) != 1) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Unable to read ROM header");
 		return FAIL;
+	}
+
+	if (fread(&NES->mem[0x8000],
+		  sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000), 1,
+		  rom_fp) != 1) {
+		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
+			   __LINE__, "[-] Unable to read PRG ROM into mem");
+		return FAIL;
+	}
+
+	if (NES->iNES_Header.PRG_ROM_bank_num == 1) {
+	memcpy(&NES->mem[0xC000],&NES->mem[0x8000],sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000));
 	}
 
 	return SUCCESS;

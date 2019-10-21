@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "nes.h"
 
+
 #define UNSUPPORTED_FORMAT 0
 #define iNES_FORMAT 1
 #define NES2_FORMAT 2
