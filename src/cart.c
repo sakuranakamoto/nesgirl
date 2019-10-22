@@ -21,7 +21,7 @@ int DetectROMFormat(FILE *rom_fp) {
 	}
 
 	if (!memcmp(header_buffer, ines_signature, 4)) {
-		if ((header_buffer[7] & 0b00001100) == 0b00001000) {
+		if ((header_buffer[7] & NES2_FORMAT_MASK) == 0b00001000) {
 			return NES2_FORMAT;
 		}
 		return iNES_FORMAT;
@@ -53,7 +53,6 @@ int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
 		memcpy(&NES->mem[PRG_ROM_BANK_1], &NES->mem[PRG_ROM_BANK_0],
 		       sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000));
 	}
-
 	return SUCCESS;
 }
 
@@ -144,16 +143,19 @@ int LoadROM(char *rom_filename, NES_T *NES) {
 		printf("[+] Detected iNES format\n");
 		load_result = LoadiNESHeader(rom_fp, NES);
 		PrintiNESInfo(rom_filename, &NES->iNES_Header);
-		//Print Memory map
 		break;
 	case NES2_FORMAT:
 		printf("[+] Detected NES2.0 format\n");
-		// load_result = LoadiNESHeader2();
+		return FAIL;
 		break;
 	case UNSUPPORTED_FORMAT:
 		fprintf(stderr, "[-] Unsupported file format for %s\n",
 			rom_filename);
 		fclose(rom_fp);
+		return FAIL;
+	}
+
+	if (load_result) {
 		return FAIL;
 	}
 

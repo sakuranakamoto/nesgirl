@@ -12,6 +12,10 @@ typedef struct iNES_Header_T {
 	uint8_t reserved[7];
 } iNES_Header_T;
 
+// typedef struct CPU_T {
+
+// } CPU_T;
+
 typedef struct NES_T {
 	iNES_Header_T iNES_Header;
 	uint8_t *mem;

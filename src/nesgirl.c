@@ -40,6 +40,8 @@ int main(int argc, char *argv[]) {
 		return FAIL;
 	}
 
+	// InitCPU(&NES)
+
 	FreeMem(NES.mem);
 	return SUCCESS;
 }
