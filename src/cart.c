@@ -52,7 +52,7 @@ int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
 
 	if (NES->iNES_Header.PRG_ROM_bank_num == 1) {
 		memcpy(&NES->mem[PRGROMBank1], &NES->mem[PRGROMBank0],
-		       sizeof(NES->iNES_Header.PRG_ROM_bank_num * 0x4000));
+		       sizeof(NES->iNES_Header.PRG_ROM_bank_num * PRGROMBankSize));
 	}
 
 	return Success;
