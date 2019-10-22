@@ -6,17 +6,23 @@
 #include "memory.h"
 
 int main(int argc, char *argv[]) {
-	NES_T NES;
+
+	enum flags {
+		Unset,
+		Set
+	};
+
+	struct NES_T NES;
 	int option;
-	int fflag = 0;
+	int f_flag = Unset;
 	char *rom_filename;
 	static const char *usage = "usage:";
 	static const char *start_message = "[+] Started up nesgirl >..<\n";
 
-	while ((option = getopt(argc, argv, "f:")) != -1) {
+	while ((option = getopt(argc, argv, "f:")) != Fail) {
 		switch (option) {
 		case 'f':
-			fflag = 1;
+			f_flag = Set;
 			rom_filename = optarg;
 			break;
 		default:
@@ -24,24 +30,26 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	if (!fflag) {
+	if (f_flag == Unset) {
 		printf("%s", usage);
-		return FAIL;
+		return Fail;
 	}
 
 	printf("%s", start_message);
 
-	if (InitMem(&NES)) {
-		return FAIL;
+	if (InitMem(&NES) == Fail) {
+		return Fail;
 	}
 
-	if (LoadROM(rom_filename, &NES)) {
+	printf("[+] Successfully allocated 0x%x of mem\n",TotalMemSize);
+
+	if (LoadROM(rom_filename, &NES) == Fail) {
 		FreeMem(NES.mem);
-		return FAIL;
+		return Fail;
 	}
 
 	// InitCPU(&NES)
 
 	FreeMem(NES.mem);
-	return SUCCESS;
+	return Success;
 }

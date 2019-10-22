@@ -1,7 +1,7 @@
 src_dir = src
 bin_dir = bin
 err_flags = -Wall -Wextra -Werror
-link_files = src/cart.c src/error.c  src/nes.c src/memory.c 
+link_files = src/cart.c src/error.c src/nes.c src/memory.c src/cpu.c src/debug.c 
 rom = rom/donkey\ kong.nes
 
 run:

@@ -3,11 +3,18 @@
 #include <stdint.h>
 #include "nes.h"
 
-#define PRG_ROM_BANK_0 0x8000
-#define PRG_ROM_BANK_1 0xC000
-#define PRG_ROM_BANK_SIZE 0x4000
+enum MemoryOffsets {
+    PRGROMBank0 = 0x8000,
+    PRGROMBank1 = 0xC000,
+};
 
-int InitMem();
-int FreeMem();
+enum MemorySizes {
+    PRGROMBankSize = 0x4000,
+    TotalMemSize = 0x10000,
+    HeaderSize = 16
+};
+
+enum SuccessFail InitMem ();
+void FreeMem();
 
 #endif
