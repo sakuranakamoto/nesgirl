@@ -4,7 +4,7 @@
 #include "error.h"
 #include "nes.h"
 
-int InitMem(NES_T *NES) {
+int InitMem(struct NES_T *NES) {
 	NES->mem = (uint8_t *)malloc(MemSize);
 
 	if (NES->mem == NULL) {

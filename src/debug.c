@@ -1,6 +1,6 @@
 #include "cart.h"
 
-void PrintiNESInfo(char *rom_filename, iNES_Header_T *iNES_Header) {
+void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header) {
 	printf("[+] Printing iNES ROM info for %s:\n", rom_filename);
 
 	printf("\tROM signature:\t%.*s\n", (int)sizeof(iNES_Header->signature),

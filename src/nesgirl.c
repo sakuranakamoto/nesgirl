@@ -6,7 +6,7 @@
 #include "memory.h"
 
 int main(int argc, char *argv[]) {
-	NES_T NES;
+	struct NES_T NES;
 	int option;
 	int fflag = 0;
 	char *rom_filename;

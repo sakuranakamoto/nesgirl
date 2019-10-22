@@ -33,10 +33,10 @@ int DetectROMFormat(FILE *rom_fp) {
 	return UnsupportedFormat;
 }
 
-int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
+int LoadiNESHeader(FILE *rom_fp, struct NES_T *NES) {
 	rewind(rom_fp);
 
-	if (fread(&NES->iNES_Header, sizeof(iNES_Header_T), 1, rom_fp) != 1) {
+	if (fread(&NES->iNES_Header, sizeof(struct iNES_Header_T), 1, rom_fp) != 1) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Unable to read ROM header");
 		return Fail;
@@ -58,7 +58,7 @@ int LoadiNESHeader(FILE *rom_fp, NES_T *NES) {
 	return Success;
 }
 
-int LoadROM(char *rom_filename, NES_T *NES) {
+int LoadROM(char *rom_filename, struct NES_T *NES) {
 	FILE *rom_fp = fopen(rom_filename, "rb");
 	int rom_format, load_result;
 

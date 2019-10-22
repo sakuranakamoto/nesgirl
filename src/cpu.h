@@ -3,6 +3,6 @@
 
 #include "nes.h"
 
-void InitCPU(NES_T *NES);
+void InitCPU(struct NES_T *NES);
 
 #endif
