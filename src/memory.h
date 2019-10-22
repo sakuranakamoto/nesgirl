@@ -10,7 +10,7 @@ enum MemoryOffsets {
 
 enum MemorySizes {
     PRGROMBankSize = 0x4000,
-    MemSize = 0x10000,
+    TotalMemSize = 0x10000,
     HeaderSize = 16
 };
 

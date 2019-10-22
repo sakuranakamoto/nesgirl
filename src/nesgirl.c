@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 		return Fail;
 	}
 
-	printf("[+] Successfully allocated 0x%x of mem\n",MemSize);
+	printf("[+] Successfully allocated 0x%x of mem\n",TotalMemSize);
 
 	if (LoadROM(rom_filename, &NES) == Fail) {
 		FreeMem(NES.mem);

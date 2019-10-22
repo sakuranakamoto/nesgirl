@@ -5,7 +5,7 @@
 #include "nes.h"
 
 enum SuccessFail InitMem (struct NES_T *NES) {
-	NES->mem = (uint8_t *)malloc(MemSize);
+	NES->mem = (uint8_t *)malloc(TotalMemSize);
 	
 	if (NES->mem == NULL) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
