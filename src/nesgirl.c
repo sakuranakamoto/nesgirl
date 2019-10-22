@@ -26,20 +26,20 @@ int main(int argc, char *argv[]) {
 
 	if (!fflag) {
 		printf("%s", usage);
-		return FAIL;
+		return Fail;
 	}
 
 	printf("%s", start_message);
 
 	if (InitMem(&NES)) {
-		return FAIL;
+		return Fail;
 	}
 
 	if (LoadROM(rom_filename, &NES)) {
 		FreeMem(NES.mem);
-		return FAIL;
+		return Fail;
 	}
 
 	FreeMem(NES.mem);
-	return SUCCESS;
+	return Success;
 }
