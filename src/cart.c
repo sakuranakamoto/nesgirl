@@ -8,17 +8,17 @@
 #include "nes.h"
 #include "debug.h"
 
-int DetectROMFormat(FILE *rom_fp) {
+enum CartridgeFormat DetectROMFormat(FILE *rom_fp) {
 	uint8_t header_buffer[16];
 	uint8_t ines_signature[] = "NES\x1A";
 
 	rewind(rom_fp);
 
-	if (fread(header_buffer, 1, sizeof(header_buffer), rom_fp) !=
-	    sizeof(header_buffer)) {
+	if (fread(header_buffer, HeaderSize, 1, rom_fp) !=
+	    1) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Unable to read ROM header");
-		return ErrorRead;
+		return ErrorFormat;
 	}
 
 	if (!memcmp(header_buffer, ines_signature, 4)) {
@@ -33,7 +33,7 @@ int DetectROMFormat(FILE *rom_fp) {
 	return UnsupportedFormat;
 }
 
-int LoadiNESHeader(FILE *rom_fp, struct NES_T *NES) {
+enum SuccessFail LoadiNESHeader(FILE *rom_fp, struct NES_T *NES) {
 	rewind(rom_fp);
 
 	if (fread(&NES->iNES_Header, sizeof(struct iNES_Header_T), 1, rom_fp) != 1) {
@@ -58,7 +58,7 @@ int LoadiNESHeader(FILE *rom_fp, struct NES_T *NES) {
 	return Success;
 }
 
-int LoadROM(char *rom_filename, struct NES_T *NES) {
+enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 	FILE *rom_fp = fopen(rom_filename, "rb");
 	int rom_format, load_result;
 
@@ -70,7 +70,7 @@ int LoadROM(char *rom_filename, struct NES_T *NES) {
 
 	rom_format = DetectROMFormat(rom_fp);
 
-	if (rom_format == ErrorRead) {
+	if (rom_format == ErrorFormat) {
 		fclose(rom_fp);
 		return Fail;
 	}
@@ -97,6 +97,5 @@ int LoadROM(char *rom_filename, struct NES_T *NES) {
 		fclose(rom_fp);
 		return Fail;
 	}
-
 	return Success;
 }

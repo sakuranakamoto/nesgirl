@@ -3,10 +3,9 @@
 
 #include <execinfo.h>
 
-enum ReturnValue {
-	Fail,
-	Success,
-	ErrorRead
+enum SuccessFail {
+	Fail = -1,
+	Success
 };
 
 

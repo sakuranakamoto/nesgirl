@@ -19,7 +19,7 @@ void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header) {
 	printf("\tCHR ROM size:\t%d KB\n", 0x8 * iNES_Header->CHR_ROM_bank_num);
 
 	printf("\tMirror type:\t");
-	if (iNES_Header->flags6 & FourScreenMirror  ) {
+	if (iNES_Header->flags6 & FourScreenMirror) {
 		printf("4 screens\n");
 	} else {
 		if (iNES_Header->flags6 & VerticleMirror) {
@@ -30,14 +30,14 @@ void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header) {
 	}
 
 	printf("\tBattery:\t");
-	if (iNES_Header->flags6 & Battery ) {
+	if (iNES_Header->flags6 & Battery) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
 	}
 
 	printf("\tTrainer:\t");
-	if (iNES_Header->flags6 & Trainer ) {
+	if (iNES_Header->flags6 & Trainer) {
 		printf("Yes\n");
 	} else {
 		printf("No\n");
