@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "nes.h"
+#include "error.h"
 
 enum iNESHeaderMasks {
 	FourScreenMirror = 0b00001000,
@@ -17,7 +18,6 @@ enum iNESHeaderMasks {
 };
 
 enum CartridgeFormat { ErrorFormat, UnsupportedFormat, iNesFormat, Nes2Format };
-
 enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES);
 enum CartridgeFormat DetectROMFormat(FILE *rom_fp);
 enum SuccessFail LoadiNESHeader(FILE *rom_fp, struct NES_T *NES);

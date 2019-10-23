@@ -8,7 +8,6 @@ enum SuccessFail {
 	Success
 };
 
-
 void PrintError(const char *function_name, char *file_name, int line_num,
 		const char *error_message);
 void PrintStackTrace(int index);
