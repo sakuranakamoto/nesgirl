@@ -88,7 +88,7 @@ enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 		break;
 	case Nes2Format:
 		printf("[+] Detected NES2.0 format\n");
-		return FAIL;
+		return Fail;
 		break;
 	case UnsupportedFormat:
 		fprintf(stderr, "[-] Unsupported file format for %s\n",
@@ -96,5 +96,5 @@ enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 		fclose(rom_fp);
 		return Fail;
 	}
-	return Success;
+	return Fail;
 }
