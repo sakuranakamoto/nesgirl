@@ -6,6 +6,7 @@
 enum MemoryOffsets {
 	PRGROMBank0 = 0x8000,
 	PRGROMBank1 = 0xC000,
+    ResetAddress = 0xFFFC
 };
 
 enum MemorySizes {

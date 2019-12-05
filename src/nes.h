@@ -16,7 +16,7 @@ struct CPU_T {
 	uint8_t A;
 	uint8_t X;
 	uint8_t Y;
-	uint8_t PC;
+	uint16_t PC;
 	uint8_t S;
 	uint8_t P;
 };
@@ -24,7 +24,7 @@ struct CPU_T {
 struct NES_T {
 	struct iNES_Header_T iNES_Header;
 	struct CPU_T CPU;
-	uint8_t *mem;
+	uint16_t *mem;
 };
 
 #endif

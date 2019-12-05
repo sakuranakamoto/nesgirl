@@ -59,3 +59,11 @@ void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header) {
 		printf("No\n");
 	}
 }
+
+void PrintCPURegs (struct CPU_T *CPU) {
+	printf("[+] CPU regs\n");
+    printf("\tCPU reg A: \t0x%x\n",CPU->A);
+    printf("\tCPU reg X: \t0x%x\n",CPU->X);
+    printf("\tCPU reg Y: \t0x%x\n",CPU->Y);
+    printf("\tCPU reg PC: \t0x%x\n",CPU->PC);
+}

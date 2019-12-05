@@ -4,13 +4,11 @@
 #include "cart.h"
 #include "error.h"
 #include "memory.h"
+#include "cpu.h"
+#include "debug.h"
 
 int main(int argc, char *argv[]) {
-
-	enum flags {
-		Unset,
-		Set
-	};
+	enum flags { Unset, Set };
 
 	struct NES_T NES;
 	int option;
@@ -41,14 +39,15 @@ int main(int argc, char *argv[]) {
 		return Fail;
 	}
 
-	printf("[+] Successfully allocated 0x%x of mem\n",TotalMemSize);
+	printf("[+] Successfully allocated 0x%x of mem\n", TotalMemSize);
 
 	if (LoadROM(rom_filename, &NES) == Fail) {
 		FreeMem(NES.mem);
 		return Fail;
 	}
 
-	// InitCPU(&NES)
+	InitCPU(&NES);
+	PrintCPURegs(&NES.CPU);
 
 	FreeMem(NES.mem);
 	return Success;

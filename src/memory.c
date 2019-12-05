@@ -4,9 +4,9 @@
 #include "error.h"
 #include "nes.h"
 
-enum SuccessFail InitMem (struct NES_T *NES) {
-	NES->mem = (uint8_t *)malloc(TotalMemSize);
-	
+enum SuccessFail InitMem(struct NES_T *NES) {
+	NES->mem = (uint16_t *)malloc(TotalMemSize);
+
 	if (NES->mem == NULL) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Malloc failed");
@@ -20,5 +20,4 @@ void FreeMem(uint8_t *mem) {
 		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
 			   __LINE__, "[-] Pointer to memory is NULL");
 	}
-	return;
 }

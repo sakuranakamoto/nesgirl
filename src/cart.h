@@ -18,9 +18,10 @@ enum iNESHeaderMasks {
 };
 
 enum CartridgeFormat { ErrorFormat, UnsupportedFormat, iNesFormat, Nes2Format };
+
 enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES);
 enum CartridgeFormat DetectROMFormat(FILE *rom_fp);
-enum SuccessFail LoadiNESHeader(FILE *rom_fp, struct NES_T *NES);
+enum SuccessFail LoadiNES(FILE *rom_fp, struct NES_T *NES);
 void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header);
 
 #endif
