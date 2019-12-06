@@ -2,20 +2,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void PrintError(const char *function_name, char *file_name, int line_num,
-		const char *error_message) {
-	fprintf(stderr, "%s\n%s failed in %s on line %d \n", error_message,
-		function_name, file_name, line_num);
-	PrintStackTrace(2);
-};
-
-void PrintStackTrace(int index) {
+void PrintStackTrace(FILE *fd,int index) {
 	void *callstack[128];
 	int frames = backtrace(callstack, 128);
 	char **backtrace_output = backtrace_symbols(callstack, frames);
 	for (; index < frames; ++index) {
-		printf("\n\t%s ", backtrace_output[index]);
+		fprintf(fd,"\n\t%s ", backtrace_output[index]);
 	}
-	printf("\n");
 	free(backtrace_output);
+}
+
+void Log(FILE *fd,const char *filename, const char *function,int line,enum LogType logtype, const char *message) {
+	switch(logtype) {
+		case Info:
+			fprintf(fd, "\n[Info] %s", message);
+			break;
+		case Error:
+			fprintf(fd, "\n[Error] %s \n\toccured in %s on line %d in function %s\n\t",message,filename,line,function);
+			PrintStackTrace(fd,2);
+			break;
+		}
 }

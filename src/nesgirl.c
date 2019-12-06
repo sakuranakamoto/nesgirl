@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	int f_flag = Unset;
 	char *rom_filename;
 	static const char *usage = "usage:";
-	static const char *start_message = "[+] Started up nesgirl >..<\n";
+	static const char *start_message = "Started up nesgirl >..<";
 
 	while ((option = getopt(argc, argv, "f:")) != Fail) {
 		switch (option) {
@@ -33,13 +33,11 @@ int main(int argc, char *argv[]) {
 		return Fail;
 	}
 
-	printf("%s", start_message);
+	LOG(Info,stderr,start_message);
 
 	if (InitMem(&NES) == Fail) {
 		return Fail;
 	}
-
-	printf("[+] Successfully allocated 0x%x of mem\n", TotalMemSize);
 
 	if (LoadROM(rom_filename, &NES) == Fail) {
 		FreeMem(NES.mem);

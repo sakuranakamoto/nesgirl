@@ -8,8 +8,7 @@ enum SuccessFail InitMem(struct NES_T *NES) {
 	NES->mem = (uint16_t *)malloc(TotalMemSize);
 
 	if (NES->mem == NULL) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Malloc failed");
+		LOG(Error,stderr,"Malloc failed");
 		return Fail;
 	}
 	return Success;
@@ -17,7 +16,10 @@ enum SuccessFail InitMem(struct NES_T *NES) {
 
 void FreeMem(uint8_t *mem) {
 	if (mem == NULL) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Pointer to memory is NULL");
+		LOG(Error,stderr,"Pointer to memory is NULL");
+	}
+
+	else {
+		free(mem);
 	}
 }

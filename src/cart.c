@@ -15,8 +15,7 @@ enum CartridgeFormat DetectROMFormat(FILE *rom_fp) {
 	rewind(rom_fp);
 
 	if (fread(header_buffer, iNESHeaderSize, 1, rom_fp) != 1) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Unable to read ROM header");
+		LOG(Error,stderr,"Unable to read ROM header");
 		return ErrorFormat;
 	}
 
@@ -27,8 +26,7 @@ enum CartridgeFormat DetectROMFormat(FILE *rom_fp) {
 		return iNesFormat;
 	}
 
-	PrintError((const char *)__PRETTY_FUNCTION__, __FILE__, __LINE__,
-		   "[-] Unsupported file format");
+	LOG(Error,stderr,"Unsupported file format");
 	return UnsupportedFormat;
 }
 
@@ -36,16 +34,14 @@ enum SuccessFail LoadiNES(FILE *rom_fp, struct NES_T *NES) {
 	rewind(rom_fp);
 
 	if (fread(&NES->iNES_Header, iNESHeaderSize, 1, rom_fp) != 1) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Unable to read ROM header");
+		LOG(Error,stderr," Unable to read ROM header");
 		return Fail;
 	}
 
 	if (fread(&NES->mem[PRGROMBank0],
 		  NES->iNES_Header.PRG_ROM_bank_num * PRGROMBankSize, 1,
 		  rom_fp) != 1) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Unable to read PRG ROM into mem");
+		LOG(Error,stderr,"Unable to read PRG ROM into mem");
 		return Fail;
 	}
 
@@ -60,8 +56,7 @@ enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 	FILE *rom_fp = fopen(rom_filename, "rb");
 
 	if (rom_fp == NULL) {
-		PrintError((const char *)__PRETTY_FUNCTION__, __FILE__,
-			   __LINE__, "[-] Unable to open ROM");
+		LOG(Error,stderr,"Unable to open ROM");
 		return Fail;
 	}
 
@@ -71,19 +66,18 @@ enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 
 	switch (rom_format) {
 	case iNesFormat:
-		printf("[+] Detected iNES format\n");
+		LOG(Info,stderr,"Detected iNES format\n");
 		load_result = LoadiNES(rom_fp, NES);
 		PrintiNESInfo(rom_filename, &NES->iNES_Header);
 		break;
 	case Nes2Format:
-		printf("[+] Detected NES2.0 format\n");
-		fprintf(stderr, "[-] Currently unsupported\n");
+		LOG(Info,stderr,"Detected NES2.0 format - Currently unsupported");
 		break;
 	case ErrorFormat:
-		fprintf(stderr, "[-] Error reading ROM\n");
+		LOG(Error, stderr, "Error reading ROM");
 		break;
 	case UnsupportedFormat:
-		fprintf(stderr, "[-] Unsupported format for ROM\n");
+		LOG(Error, stderr,"Unsupported format for ROM");
 		break;
 	}
 	return load_result;

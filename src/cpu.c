@@ -10,5 +10,5 @@ void InitCPU(struct NES_T *NES) {
 	NES->CPU.X = 0;
 	NES->CPU.Y = 0;
 	NES->CPU.PC =
-		NES->mem[ResetAddress] + (NES->mem[ResetAddress + 1] << 8);
+	NES->mem[ResetAddress] + (NES->mem[ResetAddress + 1] << 8);
 }
