@@ -17,6 +17,7 @@ enum SuccessFail {
 
 enum LogType {
 	Info,
+	Debug,
 	Error
 };
 
