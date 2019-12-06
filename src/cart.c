@@ -66,9 +66,9 @@ enum SuccessFail LoadROM(char *rom_filename, struct NES_T *NES) {
 
 	switch (rom_format) {
 	case iNesFormat:
-		LOG(Info,stderr,"Detected iNES format\n");
+		LOG(Info,stderr,"Detected iNES format");
 		load_result = LoadiNES(rom_fp, NES);
-		PrintiNESInfo(rom_filename, &NES->iNES_Header);
+		// PrintiNESInfo(rom_filename, &NES->iNES_Header);
 		break;
 	case Nes2Format:
 		LOG(Info,stderr,"Detected NES2.0 format - Currently unsupported");

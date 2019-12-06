@@ -60,10 +60,9 @@ void PrintiNESInfo(char *rom_filename, struct iNES_Header_T *iNES_Header) {
 	}
 }
 
-void PrintCPURegs (struct CPU_T *CPU) {
-	printf("[+] CPU regs\n");
-    printf("\tCPU reg A: \t0x%x\n",CPU->A);
-    printf("\tCPU reg X: \t0x%x\n",CPU->X);
-    printf("\tCPU reg Y: \t0x%x\n",CPU->Y);
-    printf("\tCPU reg PC: \t0x%x\n",CPU->PC);
+void PrintCPURegs (struct CPU_T *CPU, FILE *fd) {
+    fprintf(fd,"\t > A: \t0x%x\n",CPU->A);
+    fprintf(fd,"\t > X: \t0x%x\n",CPU->X);
+    fprintf(fd,"\t > Y: \t0x%x\n",CPU->Y);
+    fprintf(fd,"\t > PC:\t0x%x\n",CPU->PC);
 }

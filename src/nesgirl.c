@@ -45,7 +45,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	InitCPU(&NES);
-	PrintCPURegs(&NES.CPU);
+	LOG(Debug, stderr, "CPU Regs");
+	PrintCPURegs(&NES.CPU, stderr);
 
 	FreeMem(NES.mem);
 	return Success;

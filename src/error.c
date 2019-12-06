@@ -9,7 +9,7 @@ void PrintStackTrace(FILE *fd,int index) {
 	char **backtrace_output = backtrace_symbols(callstack, frames);
 	fprintf(fd, "[Stack Trace]");
 	for (; index < frames; ++index) {
-		fprintf(fd,"\n\t\t> %s ", backtrace_output[index]);
+		fprintf(fd,"\n\t > %s ", backtrace_output[index]);
 	}
 	free(backtrace_output);
 }
@@ -27,10 +27,11 @@ void Log(FILE *fd,const char *filename, const char *function,int line,enum LogTy
 			fprintf(fd, "\n\n[Info]\t@ %s\t[Message]\t%s ",local_time,message);
 			break;
 		case Error:
-			fprintf(fd, "\n\n[Error]\t@ %s\t[Cause]\t\t%s \n\t[File]\t\t%s\n\t[Line]\t\t%d\n\t[Function]\t%s \n\t",local_time,message,filename,line,function);
+			fprintf(fd, "\n\n[Error]\t@ %s\t[Cause]\t\t%s \n\t[File]\t\t%s\n\t[Line]\t\t%d\n\t[Function]\t%s\n\t",local_time,message,filename,line,function);
 			PrintStackTrace(fd,2);
 			break;
 		case Debug:
+			fprintf(fd, "\n\n[Debug]\t@ %s\t[Item]\t\t%s\n",local_time,message);
 			break;
 		}
 }
